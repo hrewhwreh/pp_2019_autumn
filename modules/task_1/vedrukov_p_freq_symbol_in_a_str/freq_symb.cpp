@@ -11,14 +11,14 @@ double getFreq(std::string str, char symb) {
     MPI_Comm_rank(MPI_COMM_WORLD, &Proc_rank);
     if (Proc_num <= 1) {
         int num = 0;
-        for (int i = 0; i < static_cast<int>str.length(); i++) {
+        for (int i = 0; i < static_cast<int>(str.length()); i++) {
             if (str[i] == symb)
                 num++;
         }
         return num / str.length();
     }
-    int substrlen = static_cast<int>str.length() / (Proc_num - 2);
-    int last_substrlen = str.length() % (Proc_num - 2);
+    int substrlen = static_cast<int>(str.length() / (Proc_num - 2));
+    int last_substrlen = static_cast<int>(str.length() % (Proc_num - 2));
     int num_symb = 0;
     int all_num_sumb = 0;
     std::string substr("", substrlen);
