@@ -1,6 +1,6 @@
 // Copyright 2019 Vedrukov Pavel
 #include <gtest-mpi-listener.hpp>
-#include <gtest>
+#include <gtest/gtest.h>
 #include <algorithm>
 #include <string>
 #include "./freq_symb.h"
