@@ -12,7 +12,7 @@ TEST(freq_symb, zero_freq) {
     char symb = '0';
     double freq = getFreq(str, symb);
     if (rank == 0) {
-        ASSERT_EQ(0, freq);
+        ASSERT_DOUBLE_EQ(0, freq);
     }
 }
 
@@ -23,7 +23,7 @@ TEST(freq_symb, full_freq) {
     char symb = 'o';
     double freq = getFreq(str, symb);
     if (rank == 0) {
-        ASSERT_EQ(1, freq);
+        ASSERT_DOUBLE_EQ(1, freq);
     }
 }
 
@@ -34,7 +34,7 @@ TEST(count_frequency, some_freq_1) {
     char symb = 'o';
     double freq = getFreq(str, symb);
     if (rank == 0) {
-        ASSERT_EQ(0.5, freq);
+        ASSERT_DOUBLE_EQ(0.5, freq);
     }
 }
 
@@ -45,7 +45,7 @@ TEST(count_frequency, some_freq_2) {
     char symb = 'i';
     double freq = getFreq(str, symb);
     if (rank == 0) {
-        ASSERT_EQ(0.2, freq);
+        ASSERT_DOUBLE_EQ(0.2, freq);
     }
 }
 
@@ -56,7 +56,7 @@ TEST(count_frequency, some_freq_3) {
     char symb = 'b';
     double freq = getFreq(str, symb);
     if (rank == 0) {
-        ASSERT_EQ(0.3, freq);
+        ASSERT_DOUBLE_EQ(0.3, freq);
     }
 }
 
