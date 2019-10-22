@@ -17,8 +17,8 @@ double getFreq(std::string str, char symb) {
         }
         return num / str.length();
     }
-    int substrlen = static_cast<int>(str.length() / (Proc_num - 2));
-    int last_substrlen = static_cast<int>(str.length() % (Proc_num - 2));
+    int substrlen = static_cast<int>(str.length()) / (Proc_num - 2);
+    int last_substrlen = static_cast<int>(str.length()) % (Proc_num - 2);
     int num_symb = 0;
     int all_num_sumb = 0;
     std::string substr("", substrlen);
@@ -28,7 +28,7 @@ double getFreq(std::string str, char symb) {
         for (int i = 1; i < Proc_num - 1; i++) {
             MPI_Send(&str[i * substrlen], substrlen, MPI_CHAR, i, 0, MPI_COMM_WORLD);
         }
-        MPI_Send(&str[substrlen * (Proc_num - 2)], str.length(), MPI_CHAR, Proc_num - 1, 1, MPI_COMM_WORLD);
+        MPI_Send(&str[substrlen * (Proc_num - 2)], last_substrlen, MPI_CHAR, Proc_num - 1, 1, MPI_COMM_WORLD);
         for (int i = 1; i < Proc_num; i++) {
             MPI_Recv(&num_symb, 1, MPI_INT, MPI_ANY_SOURCE, 2, MPI_COMM_WORLD, &status);
             all_num_sumb += num_symb;
