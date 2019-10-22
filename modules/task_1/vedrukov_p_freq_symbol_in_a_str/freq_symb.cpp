@@ -15,7 +15,7 @@ double getFreq(std::string str, char symb) {
             if (str[i] == symb)
                 num++;
         }
-        return (double)num / str.length();
+        return static_cast<double>num / str.length();
     }
     int substrlen = static_cast<int>(str.length()) / (Proc_num - 2);
     int last_substrlen = static_cast<int>(str.length()) % (Proc_num - 2);
@@ -53,5 +53,5 @@ double getFreq(std::string str, char symb) {
         }
         MPI_Send(&num_symb, 1, MPI_INT, 0, 2, MPI_COMM_WORLD);
     }
-    return (double)all_num_sumb / str.length();
+    return static_cast<double>all_num_sumb / str.length();
 }
