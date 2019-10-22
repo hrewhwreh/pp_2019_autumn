@@ -9,7 +9,7 @@ double getFreq(std::string str, char symb) {
     int Proc_rank;
     MPI_Comm_size(MPI_COMM_WORLD, &Proc_num);
     MPI_Comm_rank(MPI_COMM_WORLD, &Proc_rank);
-    if (Proc_num <= 1) {
+    if (Proc_num <= 2) {
         int num = 0;
         for (int i = 0; i < static_cast<int>(str.length()); i++) {
             if (str[i] == symb)
@@ -26,7 +26,7 @@ double getFreq(std::string str, char symb) {
     MPI_Barrier(MPI_COMM_WORLD);
     if (Proc_rank == 0) {
         for (int i = 1; i < Proc_num - 1; i++) {
-            MPI_Send(&str[i * substrlen], substrlen, MPI_CHAR, i, 0, MPI_COMM_WORLD);
+            MPI_Send(&str[(i - 1) * substrlen], substrlen, MPI_CHAR, i, 0, MPI_COMM_WORLD);
         }
         MPI_Send(&str[substrlen * (Proc_num - 2)], last_substrlen, MPI_CHAR, Proc_num - 1, 1, MPI_COMM_WORLD);
         for (int i = 1; i < Proc_num; i++) {

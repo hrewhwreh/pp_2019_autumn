@@ -12,7 +12,7 @@ TEST(freq_symb, zero_freq) {
     char symb = '0';
     double freq = getFreq(str, symb);
     if (rank == 0) {
-        ASSERT_DOUBLE_EQ(0, freq);
+        ASSERT_DOUBLE_EQ(0.0, freq);
     }
 }
 
@@ -23,7 +23,7 @@ TEST(freq_symb, full_freq) {
     char symb = 'o';
     double freq = getFreq(str, symb);
     if (rank == 0) {
-        ASSERT_DOUBLE_EQ(1, freq);
+        ASSERT_DOUBLE_EQ(1.0, freq);
     }
 }
 
