@@ -28,27 +28,30 @@ double getFreq(std::string str, char symb) {
         for (int i = 1; i < Proc_num - 1; i++) {
             MPI_Send(&str[(i - 1) * substrlen], substrlen, MPI_CHAR, i, 0, MPI_COMM_WORLD);
         }
-        MPI_Send(&str[substrlen * (Proc_num - 2)], last_substrlen, MPI_CHAR, Proc_num - 1, 1, MPI_COMM_WORLD);
+        if (last_substrlen != 0) {
+            MPI_Send(&str[substrlen * (Proc_num - 2)], last_substrlen, MPI_CHAR, Proc_num - 1, 1, MPI_COMM_WORLD);
+        }
         for (int i = 1; i < Proc_num; i++) {
             MPI_Recv(&num_symb, 1, MPI_INT, MPI_ANY_SOURCE, 2, MPI_COMM_WORLD, &status);
             all_num_sumb += num_symb;
         }
     } else {
+        num_symb = 0;
         if (Proc_rank > 0 && Proc_rank < Proc_num - 1) {
             MPI_Recv(&substr[0], substrlen, MPI_CHAR, 0, 0, MPI_COMM_WORLD, &status);
-            num_symb = 0;
             for (int i = 0; i < substrlen; i++) {
                 if (substr[i] == symb)
                     num_symb++;
             }
         }
-        if (Proc_rank == Proc_num - 1) {
-            substr.resize(last_substrlen);
-            num_symb = 0;
-            MPI_Recv(&substr[0], last_substrlen, MPI_CHAR, 0, 1, MPI_COMM_WORLD, &status);
-            for (int i = 0; i < substrlen; i++) {
-                if (substr[i] == symb)
-                    num_symb++;
+        if (last_substrlen != 0) {
+            if (Proc_rank == Proc_num - 1) {
+                substr.resize(last_substrlen);
+                MPI_Recv(&substr[0], last_substrlen, MPI_CHAR, 0, 1, MPI_COMM_WORLD, &status);
+                for (int i = 0; i < substrlen; i++) {
+                    if (substr[i] == symb)
+                        num_symb++;
+                }
             }
         }
         MPI_Send(&num_symb, 1, MPI_INT, 0, 2, MPI_COMM_WORLD);
