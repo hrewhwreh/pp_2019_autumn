@@ -2,7 +2,8 @@
 
 #include <mpi.h>
 #include <vector>
-#include <cstdlib>
+#include <random>
+#include <ctime>
 #include <iostream>
 #include "../../../modules/task_2/vedrukov_p_multi_matrix_a_and_b/multiplicate_matrix.h"
 
@@ -122,8 +123,10 @@ std::vector<int> multiplicate_matrix(std::vector<int> A, std::vector<int> B,
 std::vector<int> get_random_matrix(int size) {
     std::vector<int> A;
     A.resize(size * size);
+    std::mt19937 gen(time(0));
+    std::uniform_int_distribution<int> uid1(-10, 10);
     for (int i = 0; i < size * size; i++) {
-        A[i] = -10 + rand_r(static_cast<unsigned int>(size)) % 21;
+        A[i] = uid1(gen);
     }
     return A;
 }
