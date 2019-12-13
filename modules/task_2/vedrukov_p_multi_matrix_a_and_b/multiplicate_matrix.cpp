@@ -123,7 +123,7 @@ std::vector<int> get_random_matrix(int size) {
     std::vector<int> A;
     A.resize(size * size);
     for (int i = 0; i < size * size; i++) {
-        A[i] = -10 + rand_r(static_cast<unsigned int>size) % 21;
+        A[i] = -10 + rand_r(static_cast<unsigned int>(size)) % 21;
     }
     return A;
 }
