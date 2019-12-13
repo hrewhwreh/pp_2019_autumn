@@ -5,7 +5,7 @@
 #include <vector>
 #include "./multiplicate_matrix.h"
 
-TEST(freq_symb, zero_freq) {
+TEST(test_1, any) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int> A{1, 2, 3, 4, 5, 6, 7, 8, 9};
@@ -18,7 +18,7 @@ TEST(freq_symb, zero_freq) {
     }
 }
 
-TEST(freq_symb, full_freq) {
+TEST(test_2, 10) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int> A;
@@ -34,7 +34,7 @@ TEST(freq_symb, full_freq) {
     }
 }
 
-TEST(count_frequency, some_freq_1) {
+TEST(test_3, 100) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int> A;
@@ -50,7 +50,7 @@ TEST(count_frequency, some_freq_1) {
     }
 }
 
-TEST(count_frequency, some_freq_2) {
+TEST(test_4, 1000) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int> A;

@@ -20,7 +20,7 @@ std::vector<int> multiplicate_matrix(std::vector<int> A, std::vector<int> B,
         throw "size error";
     }
 
-    if (Proc_num <= 2) {
+    if (Proc_num <= 2 ) {
         std::vector<int> C;
         C.resize(c_size_A * r_size_B);
         for (int i = 0; i < static_cast<int>(C.size()); i++) {
@@ -47,6 +47,11 @@ std::vector<int> multiplicate_matrix(std::vector<int> A, std::vector<int> B,
             A.resize(c_size * r_size_A);
             std::vector<double> temp;
             temp.resize(r_size_B * c_size_B);
+            for (int i = c_size_A; i < c_size; i++) {
+                for (int j = 0; j < r_size_A; j++) {
+                    A[i * r_size_A + j] = 0;
+                }
+            }
             for (int i = 0; i < c_size_B; i++) {
                 for (int j = 0; j < r_size_B; j++) {
                     temp[j * c_size_B + i] = B[i * r_size_B + j];
@@ -58,6 +63,11 @@ std::vector<int> multiplicate_matrix(std::vector<int> A, std::vector<int> B,
                 }
             }
             B.resize(r_size * c_size_B);
+            for (int i = r_size_B; i < r_size; i++) {
+                for (int j = 0; j < c_size_B; j++) {
+                    B[i * c_size_B + j] = 0;
+                }
+            }
         }
 
         std::vector<int> buf_A;
@@ -83,7 +93,7 @@ std::vector<int> multiplicate_matrix(std::vector<int> A, std::vector<int> B,
         }
 
         int n_p, p_p;
-        for (int a = 0; a < Proc_num; a++) {
+        for (int a = 1; a < Proc_num; a++) {
             n_p = Proc_rank + 1;
             if (Proc_rank == Proc_num - 1) {
                 n_p = 0;
