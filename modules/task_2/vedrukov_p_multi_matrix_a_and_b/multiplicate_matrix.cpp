@@ -2,6 +2,7 @@
 
 #include <mpi.h>
 #include <vector>
+#include <cstdlib>
 #include <iostream>
 #include "../../../modules/task_2/vedrukov_p_multi_matrix_a_and_b/multiplicate_matrix.h"
 
@@ -69,12 +70,12 @@ std::vector<int> multiplicate_matrix(std::vector<int> A, std::vector<int> B,
         int part_A = buf_A_c_size * r_size_A;
         int part_B = buf_B_r_size * c_size_B;
 
-        MPI_Scatter(A, part_A, MPI_INT, buf_A, part_A, MPI_INT, 0, MPI_COMM_WORLD);
-        MPI_Scatter(B, part_B, MPI_INT, buf_B, part_B, MPI_INT, 0, MPI_COMM_WORLD);
+        MPI_Scatter(&A, part_A, MPI_INT, buf_A, part_A, MPI_INT, 0, MPI_COMM_WORLD);
+        MPI_Scatter(&B, part_B, MPI_INT, buf_B, part_B, MPI_INT, 0, MPI_COMM_WORLD);
 
         for (int i = 0; i < part_A; i++) {
             for (int j = 0; j < part_B; j++) {
-                for (int k = 0; k < r_size_A) {
+                for (int k = 0; k < r_size_A; k++) {
                     buf_C[i * r_size + j + Proc_rank * buf_B_r_size] = buf_A[i * r_size + k] * buf_B[j * c_size + k];
                 }
             }
@@ -90,11 +91,11 @@ std::vector<int> multiplicate_matrix(std::vector<int> A, std::vector<int> B,
             if (Proc_rank == 0) {
                 p_p = Proc_num - 1;
             }
-            MPI_Sendrecv_replace(buf_B, part_B, MPI_INT, n_p, 0, p_p, 0, MPI_COMM_WORLD, &Status);
+            MPI_Sendrecv_replace(&buf_B, part_B, MPI_INT, n_p, 0, p_p, 0, MPI_COMM_WORLD, &status);
             int t = 0;
             for (int i = 0; i < part_A; i++) {
                 for (int j = 0; j < part_B; j++) {
-                    for (int k = 0; k < r_size_A) {
+                    for (int k = 0; k < r_size_A; k++) {
                         t = buf_A[i * r_size + k] * buf_B[j * c_size + k];
                     }
                     if (Proc_rank - a >= 0) {
@@ -105,7 +106,7 @@ std::vector<int> multiplicate_matrix(std::vector<int> A, std::vector<int> B,
                 }
             }
         }
-        MPI_Gather(buf_C, r_size * buf_B_r_size, MPI_INT, C, r_size * buf_B_r_size, MPI_INT, 0, MPI_COMM_WORLD);
+        MPI_Gather(&buf_C, r_size * buf_B_r_size, MPI_INT, C, r_size * buf_B_r_size, MPI_INT, 0, MPI_COMM_WORLD);
 
         std::vector<int> result;
         result.resize(c_size_A * r_size_B);
@@ -122,7 +123,7 @@ std::vector<int> get_random_matrix(int size) {
     std::vector<int> A;
     A.resize(size * size);
     for (int i = 0; i < size * size; i++) {
-        A[i] = -10 + rand_r() % 21;
+        A[i] = -10 + rand_r(size) % 21;
     }
     return A;
 }
