@@ -20,7 +20,7 @@ std::vector<int> multiplicate_matrix(std::vector<int> A, std::vector<int> B,
         throw "size error";
     }
 
-    if (Proc_num <= 2 ) {
+    if (Proc_num <= 2) {
         std::vector<int> C;
         C.resize(c_size_A * r_size_B);
         for (int i = 0; i < static_cast<int>(C.size()); i++) {
