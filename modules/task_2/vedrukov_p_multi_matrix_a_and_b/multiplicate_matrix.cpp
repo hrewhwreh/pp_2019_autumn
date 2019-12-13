@@ -5,26 +5,27 @@
 #include <iostream>
 #include "../../../modules/task_1/vedrukov_p_freq_symbol_in_a_str/multiplicate_matrix.h"
 
-std::vector<int> multiplicate_matrix(std::vector<int> A, std::vector<int> B, int r_size_A, int c_size_A, int r_size_B, int c_size_B) {
+std::vector<int> multiplicate_matrix(std::vector<int> A, std::vector<int> B,
+                                     int r_size_A, int c_size_A,
+                                     int r_size_B, int c_size_B) {
     int Proc_num;
     int Proc_rank;
     MPI_Comm_size(MPI_COMM_WORLD, &Proc_num);
     MPI_Comm_rank(MPI_COMM_WORLD, &Proc_rank);
     MPI_Status status;
 
-    if (r_size_A != c_size_B)
-    {
+    if (r_size_A != c_size_B) {
         throw "size error"
     }
 
-    if (Proc_num <= 2) { 
+    if (Proc_num <= 2) {
         std::vector<int> C;
-        C.resize(c_size_A * r_size_B);   
+        C.resize(c_size_A * r_size_B);
         for (int i = 0; i < static_cast<int>(C.size()); i++) {
             for (int j = 0; j < static_cast<int>(C.size()); j++) {
                 for (int k = 0; k < static_cast<int>(C.size()); k++) {
                     C[i * c_size_A + j] += A[i * r_size_A + k] * B[k * c_size_B + j];
-                }  
+                }
             }
         }
         return C;
@@ -42,7 +43,6 @@ std::vector<int> multiplicate_matrix(std::vector<int> A, std::vector<int> B, int
         C.resize(c_size * r_size);
         if (Proc_rank == 0) {
             A.resize(c_size * r_size_A);
-            
             std::vector<double> temp;
             temp.resize(r_size_B * c_size_B);
             for (int i = 0; i < c_size_B; i++) {
@@ -55,7 +55,7 @@ std::vector<int> multiplicate_matrix(std::vector<int> A, std::vector<int> B, int
                     B[j * c_size_B + i] = temp[j * c_size_B + i];
                 }
             }
-            B.resize(r_size * c_size_B);           
+            B.resize(r_size * c_size_B);
         }
 
         std::vector<int> buf_A;
@@ -71,15 +71,15 @@ std::vector<int> multiplicate_matrix(std::vector<int> A, std::vector<int> B, int
 
         MPI_Scatter(A, part_A, MPI_INT, buf_A, part_A, MPI_INT, 0, MPI_COMM_WORLD);
         MPI_Scatter(B, part_B, MPI_INT, buf_B, part_B, MPI_INT, 0, MPI_COMM_WORLD);
-        
+
         for (int i = 0; i < part_A; i++) {
             for (int j = 0; j < part_B; j++) {
                 for (int k = 0; k < r_size_A) {
                     buf_C[i * r_size + j + Proc_rank * buf_B_r_size] = buf_A[i * r_size + k] * buf_B[j * c_size + k];
                 }
-            }    
+            }
         }
-        
+
         int n_p, p_p;
         for (int a = 0; a < Proc_num; a++) {
             n_p = Proc_rank + 1;
@@ -103,11 +103,11 @@ std::vector<int> multiplicate_matrix(std::vector<int> A, std::vector<int> B, int
                     } else {
                         buf_C[i * r_size + j + (Proc_num + Proc_rank - a) * buf_B_r_size] = t;
                     }
-                }    
+                }
             }
         }
         MPI_Gather(buf_C, r_size * buf_B_r_size, MPI_INT, C, r_size * buf_B_r_size, MPI_INT, 0, MPI_COMM_WORLD);
-        
+
         std::vector<int> result;
         result.resize(c_size_A * r_size_B);
         for (int i = 0; i < c_size_A; i++) {
@@ -130,15 +130,17 @@ std::vector<int> get_random_matrix(int size)
     return A;
 }
 
-std::vector<int> multiplicate_matrix(std::vector<int> A, std::vector<int> B, int r_size_A, int c_size_A, int r_size_B, int c_size_B) {
+std::vector<int> multiplicate_matrix(std::vector<int> A, std::vector<int> B,
+                                     int r_size_A, int c_size_A,
+                                     int r_size_B, int c_size_B) {
     std::vector<int> C;
-        C.resize(c_size_A * r_size_B);   
-        for (int i = 0; i < static_cast<int>(C.size()); i++) {
-            for (int j = 0; j < static_cast<int>(C.size()); j++) {
-                for (int k = 0; k < static_cast<int>(C.size()); k++) {
-                    C[i * r_size_B + j] += A[i * r_size_A + k] * B[k * c_size_B + j];
-                }  
+    C.resize(c_size_A * r_size_B);
+    for (int i = 0; i < static_cast<int>(C.size()); i++) {
+        for (int j = 0; j < static_cast<int>(C.size()); j++) {
+            for (int k = 0; k < static_cast<int>(C.size()); k++) {
+                C[i * r_size_B + j] += A[i * r_size_A + k] * B[k * c_size_B + j];
             }
         }
-        return C;
+    }
+    return C;
 }
