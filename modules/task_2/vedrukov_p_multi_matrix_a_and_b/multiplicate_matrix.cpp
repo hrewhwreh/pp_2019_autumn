@@ -16,7 +16,7 @@ std::vector<int> multiplicate_matrix(std::vector<int> A, std::vector<int> B,
     MPI_Status status;
 
     if (r_size_A != c_size_B) {
-        throw "size error"
+        throw "size error";
     }
 
     if (Proc_num <= 2) {
@@ -70,8 +70,8 @@ std::vector<int> multiplicate_matrix(std::vector<int> A, std::vector<int> B,
         int part_A = buf_A_c_size * r_size_A;
         int part_B = buf_B_r_size * c_size_B;
 
-        MPI_Scatter(&A, part_A, MPI_INT, buf_A, part_A, MPI_INT, 0, MPI_COMM_WORLD);
-        MPI_Scatter(&B, part_B, MPI_INT, buf_B, part_B, MPI_INT, 0, MPI_COMM_WORLD);
+        MPI_Scatter(&A, part_A, MPI_INT, &buf_A, part_A, MPI_INT, 0, MPI_COMM_WORLD);
+        MPI_Scatter(&B, part_B, MPI_INT, &buf_B, part_B, MPI_INT, 0, MPI_COMM_WORLD);
 
         for (int i = 0; i < part_A; i++) {
             for (int j = 0; j < part_B; j++) {
@@ -106,7 +106,7 @@ std::vector<int> multiplicate_matrix(std::vector<int> A, std::vector<int> B,
                 }
             }
         }
-        MPI_Gather(&buf_C, r_size * buf_B_r_size, MPI_INT, C, r_size * buf_B_r_size, MPI_INT, 0, MPI_COMM_WORLD);
+        MPI_Gather(&buf_C, r_size * buf_B_r_size, MPI_INT, &C, r_size * buf_B_r_size, MPI_INT, 0, MPI_COMM_WORLD);
 
         std::vector<int> result;
         result.resize(c_size_A * r_size_B);
@@ -123,7 +123,7 @@ std::vector<int> get_random_matrix(int size) {
     std::vector<int> A;
     A.resize(size * size);
     for (int i = 0; i < size * size; i++) {
-        A[i] = -10 + rand_r(size) % 21;
+        A[i] = -10 + rand_r(static_cast<unsigned int>size) % 21;
     }
     return A;
 }
