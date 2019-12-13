@@ -3,7 +3,7 @@
 #include <mpi.h>
 #include <vector>
 #include <iostream>
-#include "../../../modules/task_2/vedrukov_p_freq_symbol_in_a_str/multiplicate_matrix.h"
+#include "../../../modules/task_2/vedrukov_p_multi_matrix_a_and_b/multiplicate_matrix.h"
 
 std::vector<int> multiplicate_matrix(std::vector<int> A, std::vector<int> B,
                                      int r_size_A, int c_size_A,
@@ -122,7 +122,7 @@ std::vector<int> get_random_matrix(int size) {
     std::vector<int> A;
     A.resize(size * size);
     for (int i = 0; i < size * size; i++) {
-        A[i] = -10 + rand() % 21;
+        A[i] = -10 + rand_r() % 21;
     }
     return A;
 }
