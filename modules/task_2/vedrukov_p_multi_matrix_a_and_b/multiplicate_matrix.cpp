@@ -3,7 +3,7 @@
 #include <mpi.h>
 #include <vector>
 #include <iostream>
-#include "../../../modules/task_1/vedrukov_p_freq_symbol_in_a_str/multiplicate_matrix.h"
+#include "../../../modules/task_2/vedrukov_p_freq_symbol_in_a_str/multiplicate_matrix.h"
 
 std::vector<int> multiplicate_matrix(std::vector<int> A, std::vector<int> B,
                                      int r_size_A, int c_size_A,
@@ -97,8 +97,7 @@ std::vector<int> multiplicate_matrix(std::vector<int> A, std::vector<int> B,
                     for (int k = 0; k < r_size_A) {
                         t = buf_A[i * r_size + k] * buf_B[j * c_size + k];
                     }
-                    if (Proc_rank - a >= 0)
-                    {
+                    if (Proc_rank - a >= 0) {
                         buf_C[i * r_size + j + (Proc_rank - a) * buf_B_r_size] = t;
                     } else {
                         buf_C[i * r_size + j + (Proc_num + Proc_rank - a) * buf_B_r_size] = t;
@@ -111,8 +110,7 @@ std::vector<int> multiplicate_matrix(std::vector<int> A, std::vector<int> B,
         std::vector<int> result;
         result.resize(c_size_A * r_size_B);
         for (int i = 0; i < c_size_A; i++) {
-            for (int j = 0; j < r_size_B; j++)
-            {
+            for (int j = 0; j < r_size_B; j++) {
                 result[i * r_size_B + j] = C[i * r_size_B + j];
             }
         }
@@ -120,8 +118,7 @@ std::vector<int> multiplicate_matrix(std::vector<int> A, std::vector<int> B,
     }
 }
 
-std::vector<int> get_random_matrix(int size)
-{
+std::vector<int> get_random_matrix(int size) {
     std::vector<int> A;
     A.resize(size * size);
     for (int i = 0; i < size * size; i++) {
@@ -130,7 +127,7 @@ std::vector<int> get_random_matrix(int size)
     return A;
 }
 
-std::vector<int> multiplicate_matrix(std::vector<int> A, std::vector<int> B,
+std::vector<int> simple_alg(std::vector<int> A, std::vector<int> B,
                                      int r_size_A, int c_size_A,
                                      int r_size_B, int c_size_B) {
     std::vector<int> C;
