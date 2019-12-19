@@ -15,7 +15,7 @@ TEST(test_1, any) {
     std::vector<int> result{18, 15, 12, 18, 15, 12, 18, 15, 12};
     if (rank == 0) {
         ASSERT_EQ(C, result);
-	}
+    }
 }
 
 TEST(test_2, 10) {

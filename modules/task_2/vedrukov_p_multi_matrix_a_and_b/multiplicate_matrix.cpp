@@ -118,8 +118,7 @@ std::vector<int> multiplicate_matrix(std::vector<int> A, std::vector<int> B,
             }
         }
         MPI_Gather(&buf_C, r_size * buf_B_r_size, MPI_INT, &C, r_size * buf_B_r_size, MPI_INT, 0, MPI_COMM_WORLD);
-        if (Proc_rank == 0)
-		{
+        if (Proc_rank == 0) {
             std::vector<int> result;
             result.resize(c_size_A * r_size_B);
             for (int i = 0; i < c_size_A; i++) {
@@ -128,7 +127,7 @@ std::vector<int> multiplicate_matrix(std::vector<int> A, std::vector<int> B,
                 }
             }
             return result;
-		}
+        }
     }
 }
 
