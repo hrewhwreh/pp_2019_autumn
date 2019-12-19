@@ -23,9 +23,9 @@ std::vector<int> multiplicate_matrix(std::vector<int> A, std::vector<int> B,
     if (Proc_num <= 2) {
         std::vector<int> C;
         C.resize(c_size_A * r_size_B);
-        for (int i = 0; i < static_cast<int>(C.size()); i++) {
-            for (int j = 0; j < static_cast<int>(C.size()); j++) {
-                for (int k = 0; k < static_cast<int>(C.size()); k++) {
+        for (int i = 0; i < c_size_A; i++) {
+            for (int j = 0; j < r_size_B; j++) {
+                for (int k = 0; k < r_size_A; k++) {
                     C[i * c_size_A + j] += A[i * r_size_A + k] * B[k * c_size_B + j];
                 }
             }
@@ -118,15 +118,17 @@ std::vector<int> multiplicate_matrix(std::vector<int> A, std::vector<int> B,
             }
         }
         MPI_Gather(&buf_C, r_size * buf_B_r_size, MPI_INT, &C, r_size * buf_B_r_size, MPI_INT, 0, MPI_COMM_WORLD);
-
-        std::vector<int> result;
-        result.resize(c_size_A * r_size_B);
-        for (int i = 0; i < c_size_A; i++) {
-            for (int j = 0; j < r_size_B; j++) {
-                result[i * r_size_B + j] = C[i * r_size_B + j];
+        if (Proc_rank == 0)
+		{
+            std::vector<int> result;
+            result.resize(c_size_A * r_size_B);
+            for (int i = 0; i < c_size_A; i++) {
+                for (int j = 0; j < r_size_B; j++) {
+                    result[i * r_size_B + j] = C[i * r_size_B + j];
+                }
             }
-        }
-        return result;
+            return result;
+		}
     }
 }
 
@@ -146,9 +148,9 @@ std::vector<int> simple_alg(std::vector<int> A, std::vector<int> B,
                                      int r_size_B, int c_size_B) {
     std::vector<int> C;
     C.resize(c_size_A * r_size_B);
-    for (int i = 0; i < static_cast<int>(C.size()); i++) {
-        for (int j = 0; j < static_cast<int>(C.size()); j++) {
-            for (int k = 0; k < static_cast<int>(C.size()); k++) {
+    for (int i = 0; i < c_size_A; i++) {
+        for (int j = 0; j < r_size_B; j++) {
+            for (int k = 0; k < r_size_A; k++) {
                 C[i * r_size_B + j] += A[i * r_size_A + k] * B[k * c_size_B + j];
             }
         }
