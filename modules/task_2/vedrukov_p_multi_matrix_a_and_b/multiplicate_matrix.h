@@ -6,8 +6,8 @@
 #include <vector>
 
 std::vector<int> multiplicate_matrix(std::vector<int> A, std::vector<int> B,
-                                     int r_size_A, int c_size_A,
-                                     int r_size_B, int c_size_B);
+                                     int size, int c_size_A,
+                                     int r_size_B);
 std::vector<int> get_random_matrix(int size);
 std::vector<int> simple_alg(std::vector<int> A, std::vector<int> B,
                                      int r_size_A, int c_size_A,
